@@ -4,6 +4,7 @@ import './globals.css'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import { ErrorBoundary } from './components/ErrorBoundary'
+import { Analytics } from './components/Analytics'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -16,7 +17,20 @@ export const metadata: Metadata = {
     title: 'AnyWallpaper - 精选高清壁纸',
     description: '发现和下载精美的高清壁纸',
     type: 'website',
+    url: 'https://www.anywallpaper.net',
   },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AnyWallpaper - 精选高清壁纸',
+    description: '发现和下载精美的高清壁纸',
+  },
+  viewport: {
+    width: 'device-width',
+    initialScale: 1,
+    maximumScale: 5,
+  },
+  themeColor: '#667eea',
+  manifest: '/manifest.json',
 }
 
 export default function RootLayout({
@@ -36,6 +50,7 @@ export default function RootLayout({
             <Footer />
           </div>
         </ErrorBoundary>
+        <Analytics />
       </body>
     </html>
   )
