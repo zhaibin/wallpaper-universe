@@ -196,7 +196,7 @@ POST /v1/user/favorites      # 添加收藏
 ### 1. 本地开发
 ```bash
 # 克隆仓库
-git clone https://github.com/anywallpaper/wallpaper-universe.git
+git clone https://github.com/zhaibin/wallpaper-universe.git
 
 # 安装依赖
 npm install
@@ -244,7 +244,7 @@ JWT_SECRET                # JWT 密钥
 
 #### Web 应用 (.env.local)
 ```
-NEXT_PUBLIC_API_URL=https://api.anywallpaper.com/v1
+NEXT_PUBLIC_API_URL=https://api.anywallpaper.net/v1
 ```
 
 ### Cloudflare 资源
@@ -316,9 +316,9 @@ MIT License - 详见 [LICENSE](LICENSE)
 
 ## 联系方式
 
-- Email: contact@anywallpaper.com
-- GitHub: https://github.com/anywallpaper/wallpaper-universe
-- Issues: https://github.com/anywallpaper/wallpaper-universe/issues
+- Email: contact@anywallpaper.net
+- GitHub: https://github.com/zhaibin/wallpaper-universe
+- Issues: https://github.com/zhaibin/wallpaper-universe/issues
 
 ---
 

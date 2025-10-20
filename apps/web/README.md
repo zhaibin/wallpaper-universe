@@ -96,7 +96,7 @@ app/
 创建 `.env.local` 文件：
 
 ```env
-NEXT_PUBLIC_API_URL=https://api.anywallpaper.com/v1
+NEXT_PUBLIC_API_URL=https://api.anywallpaper.net/v1
 ```
 
 ## License

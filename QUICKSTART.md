@@ -75,7 +75,7 @@ git commit -m "feat: initial project setup with full stack implementation"
 
 ```bash
 # 创建新的 GitHub 仓库后
-git remote add origin https://github.com/你的用户名/wallpaper-universe.git
+git remote add origin https://github.com/zhaibin/wallpaper-universe.git
 git branch -M main
 git push -u origin main
 ```
@@ -295,7 +295,7 @@ flutter logs
 ## ❓ 遇到问题？
 
 1. 查看 [常见问题](docs/SETUP.md#常见问题)
-2. 搜索 [GitHub Issues](https://github.com/anywallpaper/wallpaper-universe/issues)
+2. 搜索 [GitHub Issues](https://github.com/zhaibin/wallpaper-universe/issues)
 3. 创建新的 Issue 寻求帮助
 
 ---

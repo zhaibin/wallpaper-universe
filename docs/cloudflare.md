@@ -91,14 +91,14 @@ npx wrangler pages deploy out --project-name=anywallpaper-web
 1. 在 Cloudflare Dashboard 中找到你的域名
 2. 进入 **Workers Routes**
 3. 添加路由：
-   - API: `api.anywallpaper.com/*` -> `anywallpaper-api`
-   - Admin: `admin.anywallpaper.com/*` -> `anywallpaper-admin`
+   - API: `api.anywallpaper.net/*` -> `anywallpaper-api`
+   - Admin: `admin.anywallpaper.net/*` -> `anywallpaper-admin`
 
 或在 `wrangler.toml` 中配置：
 
 ```toml
 routes = [
-  { pattern = "api.anywallpaper.com/*", zone_name = "anywallpaper.com" }
+  { pattern = "api.anywallpaper.net/*", zone_name = "anywallpaper.net" }
 ]
 ```
 
@@ -106,7 +106,7 @@ routes = [
 
 1. 进入 Pages 项目设置
 2. 点击 **Custom domains**
-3. 添加域名 `www.anywallpaper.com`
+3. 添加域名 `www.anywallpaper.net`
 
 ## 环境变量
 
@@ -116,7 +116,7 @@ routes = [
 
 ```
 JWT_SECRET=your-secret-key-here
-API_URL=https://api.anywallpaper.com
+API_URL=https://api.anywallpaper.net
 ```
 
 或使用 wrangler：
@@ -130,7 +130,7 @@ wrangler secret put JWT_SECRET
 在 Pages 项目设置中添加：
 
 ```
-NEXT_PUBLIC_API_URL=https://api.anywallpaper.com/v1
+NEXT_PUBLIC_API_URL=https://api.anywallpaper.net/v1
 ```
 
 ## 更新 wrangler.toml
@@ -152,7 +152,7 @@ binding = "WALLPAPER_CACHE"
 id = "your-kv-namespace-id"
 
 routes = [
-  { pattern = "api.anywallpaper.com/*", zone_name = "anywallpaper.com" }
+  { pattern = "api.anywallpaper.net/*", zone_name = "anywallpaper.net" }
 ]
 ```
 
@@ -168,7 +168,7 @@ binding = "WALLPAPER_CACHE"
 id = "your-kv-namespace-id"
 
 routes = [
-  { pattern = "admin.anywallpaper.com/*", zone_name = "anywallpaper.com" }
+  { pattern = "admin.anywallpaper.net/*", zone_name = "anywallpaper.net" }
 ]
 ```
 
@@ -300,4 +300,4 @@ wrangler kv:key delete "key-name" --namespace-id=your-namespace-id
 
 ---
 
-如有问题，请提交 [Issue](https://github.com/anywallpaper/wallpaper-universe/issues)。
+如有问题，请提交 [Issue](https://github.com/zhaibin/wallpaper-universe/issues)。

@@ -6,9 +6,9 @@
 
 **精选高清壁纸，支持 iOS、Android、Windows、macOS、Linux 和 Web**
 
-[![CI](https://github.com/anywallpaper/wallpaper-universe/workflows/CI/badge.svg)](https://github.com/anywallpaper/wallpaper-universe/actions)
+[![CI](https://github.com/zhaibin/wallpaper-universe/workflows/CI/badge.svg)](https://github.com/zhaibin/wallpaper-universe/actions)
 [![License](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
-[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/anywallpaper/wallpaper-universe/pulls)
+[![PRs Welcome](https://img.shields.io/badge/PRs-welcome-brightgreen.svg)](https://github.com/zhaibin/wallpaper-universe/pulls)
 
 [English](README_EN.md) | 简体中文
 

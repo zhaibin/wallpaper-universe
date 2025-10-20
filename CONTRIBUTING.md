@@ -10,7 +10,7 @@
 
 ### 报告 Bug
 
-如果你发现了 Bug，请通过 [GitHub Issues](https://github.com/anywallpaper/wallpaper-universe/issues) 报告：
+如果你发现了 Bug，请通过 [GitHub Issues](https://github.com/zhaibin/wallpaper-universe/issues) 报告：
 
 1. 使用清晰的标题描述问题
 2. 提供详细的复现步骤
@@ -145,8 +145,8 @@ wallpaper-universe/
 如果你有任何疑问：
 
 - 查看 [文档](docs/)
-- 查看已有的 [Issues](https://github.com/anywallpaper/wallpaper-universe/issues)
-- 在 [Discussions](https://github.com/anywallpaper/wallpaper-universe/discussions) 中提问
+- 查看已有的 [Issues](https://github.com/zhaibin/wallpaper-universe/issues)
+- 在 [Discussions](https://github.com/zhaibin/wallpaper-universe/discussions) 中提问
 
 ## 许可证
 

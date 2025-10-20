@@ -64,7 +64,7 @@ wrangler login
 ### 2. 克隆项目
 
 ```bash
-git clone https://github.com/anywallpaper/wallpaper-universe.git
+git clone https://github.com/zhaibin/wallpaper-universe.git
 cd wallpaper-universe
 ```
 
@@ -185,7 +185,7 @@ wrangler d1 create anywallpaper-db
 在 `apps/web/` 创建 `.env.local`:
 
 ```env
-NEXT_PUBLIC_API_URL=https://api.anywallpaper.com/v1
+NEXT_PUBLIC_API_URL=https://api.anywallpaper.net/v1
 ```
 
 ### 桌面应用
@@ -325,5 +325,5 @@ npm install
 
 ---
 
-需要帮助？请在 [GitHub Issues](https://github.com/anywallpaper/wallpaper-universe/issues) 提问。
+需要帮助？请在 [GitHub Issues](https://github.com/zhaibin/wallpaper-universe/issues) 提问。
 

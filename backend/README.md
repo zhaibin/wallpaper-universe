@@ -154,7 +154,7 @@ wrangler d1 execute anywallpaper-db --file=./schema.sql
 
 ```toml
 routes = [
-  { pattern = "api.anywallpaper.com/*", zone_name = "anywallpaper.com" }
+  { pattern = "api.anywallpaper.net/*", zone_name = "anywallpaper.net" }
 ]
 ```
 
@@ -170,7 +170,7 @@ routes = [
 
 ```bash
 curl -H "Authorization: Bearer demo-token" \
-  https://api.anywallpaper.com/v1/user/favorites
+  https://api.anywallpaper.net/v1/user/favorites
 ```
 
 ## 缓存策略

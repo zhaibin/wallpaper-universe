@@ -22,8 +22,8 @@
 ```bash
 cd /Users/zhaibin/Code/wallpaper-universe
 
-# 添加远程仓库（替换为你的用户名）
-git remote add origin https://github.com/你的用户名/wallpaper-universe.git
+# 添加远程仓库（替换为zhaibin）
+git remote add origin https://github.com/zhaibin/wallpaper-universe.git
 
 # 推送到 GitHub
 git branch -M main
@@ -32,7 +32,7 @@ git push -u origin main
 
 ### 3. 验证推送
 
-访问 `https://github.com/你的用户名/wallpaper-universe` 确认代码已上传。
+访问 `https://github.com/zhaibin/wallpaper-universe` 确认代码已上传。
 
 ## ☁️ 第二步：部署到 Cloudflare
 
@@ -78,8 +78,8 @@ npm run deploy
 
 ```bash
 # 测试 API
-curl https://anywallpaper-api.你的用户名.workers.dev/health
-curl https://anywallpaper-api.你的用户名.workers.dev/v1/wallpapers
+curl https://anywallpaper-api.zhaibin.workers.dev/health
+curl https://anywallpaper-api.zhaibin.workers.dev/v1/wallpapers
 ```
 
 ## 🌐 第三步：部署 Web 应用到 Cloudflare Pages
@@ -98,7 +98,7 @@ curl https://anywallpaper-api.你的用户名.workers.dev/v1/wallpapers
 
 5. 添加环境变量：
    ```
-   NEXT_PUBLIC_API_URL=https://anywallpaper-api.你的用户名.workers.dev/v1
+   NEXT_PUBLIC_API_URL=https://anywallpaper-api.zhaibin.workers.dev/v1
    ```
 
 6. 点击 **Save and Deploy**
@@ -147,7 +147,7 @@ git push
 ```
 
 查看 Actions 运行状态：
-`https://github.com/你的用户名/wallpaper-universe/actions`
+`https://github.com/zhaibin/wallpaper-universe/actions`
 
 ## 🧪 第五步：测试部署
 
@@ -155,17 +155,17 @@ git push
 
 ```bash
 # Health Check
-curl https://api.anywallpaper.com/health
+curl https://api.anywallpaper.net/health
 # 或
-curl https://anywallpaper-api.你的用户名.workers.dev/health
+curl https://anywallpaper-api.zhaibin.workers.dev/health
 
 # Wallpapers API
-curl https://api.anywallpaper.com/v1/wallpapers
+curl https://api.anywallpaper.net/v1/wallpapers
 # 或  
-curl https://anywallpaper-api.你的用户名.workers.dev/v1/wallpapers
+curl https://anywallpaper-api.zhaibin.workers.dev/v1/wallpapers
 
 # Categories API
-curl https://api.anywallpaper.com/v1/categories
+curl https://api.anywallpaper.net/v1/categories
 ```
 
 ### 测试 Web 应用
@@ -177,12 +177,12 @@ curl https://api.anywallpaper.com/v1/categories
 ### 测试 Admin 后台
 
 访问：
-- `https://anywallpaper-admin.你的用户名.workers.dev`
+- `https://anywallpaper-admin.zhaibin.workers.dev`
 - 使用 Bearer Token: `demo-token`
 
 ```bash
 curl -H "Authorization: Bearer demo-token" \
-  https://anywallpaper-admin.你的用户名.workers.dev/dashboard
+  https://anywallpaper-admin.zhaibin.workers.dev/dashboard
 ```
 
 ## 🎯 配置自定义域名（可选）
@@ -284,7 +284,7 @@ git push
 遇到问题？
 
 1. 查看 [Cloudflare 文档](https://developers.cloudflare.com/)
-2. 搜索 [GitHub Issues](https://github.com/你的用户名/wallpaper-universe/issues)
+2. 搜索 [GitHub Issues](https://github.com/zhaibin/wallpaper-universe/issues)
 3. 提交新的 Issue
 
 ---
