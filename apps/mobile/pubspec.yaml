@@ -30,7 +30,7 @@ dependencies:
   
   # 图片处理
   image_gallery_saver: ^2.0.3
-  permission_handler: ^11.1.0
+  permission_handler: ">=11.1.0 <13.0.0"
   
   # 工具
   url_launcher: ^6.2.2
