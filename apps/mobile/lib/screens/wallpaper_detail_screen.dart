@@ -93,28 +93,56 @@ class WallpaperDetailScreen extends StatelessWidget {
                     ),
                   ],
                   const SizedBox(height: 24),
-                  Row(
+                  Column(
                     children: [
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () => _setAsWallpaper(context),
-                          icon: const Icon(Icons.wallpaper),
-                          label: const Text('设为壁纸'),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
+                      Row(
+                        children: [
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () => _setAsWallpaper(context),
+                              icon: const Icon(Icons.wallpaper),
+                              label: const Text('设为壁纸'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                              ),
+                            ),
                           ),
-                        ),
+                          const SizedBox(width: 12),
+                          Expanded(
+                            child: ElevatedButton.icon(
+                              onPressed: () => _downloadWallpaper(context),
+                              icon: const Icon(Icons.download),
+                              label: const Text('下载'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: ElevatedButton.icon(
-                          onPressed: () => _downloadWallpaper(context),
-                          icon: const Icon(Icons.download),
-                          label: const Text('下载'),
-                          style: ElevatedButton.styleFrom(
-                            padding: const EdgeInsets.symmetric(vertical: 16),
-                          ),
-                        ),
+                      const SizedBox(height: 12),
+                      Consumer<WallpaperProvider>(
+                        builder: (context, provider, child) {
+                          final currentItem = provider.currentItem;
+                          return SizedBox(
+                            width: double.infinity,
+                            child: ElevatedButton.icon(
+                              onPressed: currentItem != null 
+                                ? () => _applyCurrentQueueItem(context, provider)
+                                : null,
+                              icon: const Icon(Icons.queue_play_next),
+                              label: Text(currentItem != null 
+                                ? '应用当前队列项' 
+                                : '队列为空'),
+                              style: ElevatedButton.styleFrom(
+                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                backgroundColor: currentItem != null 
+                                  ? Colors.green 
+                                  : Colors.grey,
+                              ),
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
@@ -242,6 +270,94 @@ class WallpaperDetailScreen extends StatelessWidget {
         _showSnack(context, '下载失败: $e');
       }
     }
+  }
+
+  Future<void> _applyCurrentQueueItem(BuildContext context, WallpaperProvider provider) async {
+    final currentItem = provider.currentItem;
+    if (currentItem == null) {
+      _showSnack(context, '队列为空');
+      return;
+    }
+
+    try {
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (context) => const Center(child: CircularProgressIndicator()),
+      );
+
+      if (Platform.isAndroid) {
+        // Android: 下载并设置壁纸
+        final tmpDir = await getTemporaryDirectory();
+        final filePath = '${tmpDir.path}/aw_queue_${currentItem.id}.jpg';
+        final resp = await Dio().get(
+          currentItem.url,
+          options: Options(responseType: ResponseType.bytes),
+        );
+        final bytes = Uint8List.fromList(resp.data as List<int>);
+        final file = File(filePath);
+        await file.writeAsBytes(bytes);
+
+        final ok = await WallpaperManager.setWallpaperFromFile(file.path, WallpaperManager.BOTH_SCREENS);
+        
+        if (context.mounted) {
+          Navigator.pop(context);
+          _showSnack(context, ok == true ? '队列项已设为壁纸！' : '设置失败');
+        }
+      } else if (Platform.isIOS) {
+        // iOS: 保存到相册并提示
+        final resp = await Dio().get(
+          currentItem.url,
+          options: Options(responseType: ResponseType.bytes),
+        );
+        
+        final result = await ImageGallerySaver.saveImage(
+          Uint8List.fromList(resp.data as List<int>),
+          quality: 100,
+          name: 'queue_${currentItem.id}',
+        );
+        
+        if (context.mounted) {
+          Navigator.pop(context);
+          if (result['isSuccess']) {
+            _showSnack(context, '已保存到相册，请前往系统设置为壁纸');
+            // 可选：跳转到系统设置
+            _showSettingsDialog(context);
+          } else {
+            _showSnack(context, '保存失败');
+          }
+        }
+      }
+    } catch (e) {
+      if (context.mounted) {
+        Navigator.pop(context);
+        _showSnack(context, '应用失败: $e');
+      }
+    }
+  }
+
+  void _showSettingsDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (ctx) => AlertDialog(
+        title: const Text('设置壁纸'),
+        content: const Text('壁纸已保存到相册，请前往系统设置 > 壁纸 > 选择新壁纸'),
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.pop(ctx),
+            child: const Text('知道了'),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.pop(ctx);
+              // 这里可以尝试打开系统设置（需要 url_launcher）
+              // launchUrl(Uri.parse('app-settings:'));
+            },
+            child: const Text('打开设置'),
+          ),
+        ],
+      ),
+    );
   }
 
   void _showSnack(BuildContext context, String msg) {

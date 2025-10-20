@@ -5,6 +5,37 @@ import useSWR from 'swr'
 import WallpaperGrid from './components/WallpaperGrid'
 import CategoryFilter from './components/CategoryFilter'
 import Hero from './components/Hero'
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'AnyWallpaper - 精选高清壁纸',
+  description: '发现和下载精美的高清壁纸，支持多端设置与轮播。AI 智能分析，多语言支持，跨设备同步。',
+  keywords: ['壁纸', '高清壁纸', 'wallpaper', '桌面壁纸', '手机壁纸', 'AI分析', '多端同步'],
+  alternates: {
+    canonical: 'https://www.anywallpaper.net',
+  },
+  openGraph: {
+    title: 'AnyWallpaper - 精选高清壁纸',
+    description: '发现和下载精美的高清壁纸，支持多端设置与轮播',
+    type: 'website',
+    url: 'https://www.anywallpaper.net',
+    siteName: 'AnyWallpaper',
+    images: [
+      {
+        url: 'https://www.anywallpaper.net/og-image.jpg',
+        width: 1200,
+        height: 630,
+        alt: 'AnyWallpaper - 精选高清壁纸',
+      },
+    ],
+  },
+  twitter: {
+    card: 'summary_large_image',
+    title: 'AnyWallpaper - 精选高清壁纸',
+    description: '发现和下载精美的高清壁纸，支持多端设置与轮播',
+    images: ['https://www.anywallpaper.net/og-image.jpg'],
+  },
+}
 
 interface Wallpaper {
   id: string
@@ -21,8 +52,8 @@ export default function Page() {
   
   const { data: wallpapers, error, isLoading } = useSWR<Wallpaper[]>(
     selectedCategory === 'all' 
-      ? 'https://api.anywallpaper.com/v1/wallpapers'
-      : `https://api.anywallpaper.com/v1/wallpapers?category=${selectedCategory}`,
+      ? 'https://api.anywallpaper.net/v1/wallpapers'
+      : `https://api.anywallpaper.net/v1/wallpapers?category=${selectedCategory}`,
     fetcher,
     {
       fallbackData: [
