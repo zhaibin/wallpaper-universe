@@ -3,6 +3,6 @@ main = "dist/_worker.js"
 compatibility_date = "2025-10-20"
 
 routes = [
-  { pattern = "anywallpaper.com/*", zone_name = "anywallpaper.com" },
-  { pattern = "www.anywallpaper.com/*", zone_name = "anywallpaper.com" }
+  { pattern = "anywallpaper.net/*", zone_name = "anywallpaper.net" },
+  { pattern = "www.anywallpaper.net/*", zone_name = "anywallpaper.net" }
 ]

@@ -15,6 +15,6 @@ id = "preview_id"  # 开发环境使用，部署时需要替换为实际 ID
 # database_id = "your-database-id"
 
 # 路由配置（部署时启用）
-# routes = [
-#   { pattern = "api.anywallpaper.com/*", zone_name = "anywallpaper.com" }
-# ]
+routes = [
+  { pattern = "api.anywallpaper.net/*", zone_name = "anywallpaper.net" }
+]

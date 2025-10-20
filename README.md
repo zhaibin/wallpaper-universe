@@ -83,7 +83,7 @@ wallpaper-universe/
 ### 克隆仓库
 
 ```bash
-git clone https://github.com/anywallpaper/wallpaper-universe.git
+git clone https://github.com/zhaibin/wallpaper-universe.git
 cd wallpaper-universe
 ```
 
@@ -218,7 +218,7 @@ npm run deploy
 创建 `apps/web/.env.local`:
 
 ```env
-NEXT_PUBLIC_API_URL=https://api.anywallpaper.com/v1
+NEXT_PUBLIC_API_URL=https://api.anywallpaper.net/v1
 ```
 
 ### 后端 API
@@ -287,9 +287,9 @@ CLOUDFLARE_ACCOUNT_ID=your-account-id
 
 ## 📧 联系我们
 
-- Email: contact@anywallpaper.com
-- Twitter: [@anywallpaper](https://twitter.com/anywallpaper)
-- Discord: [加入我们的社区](https://discord.gg/anywallpaper)
+- Website: https://anywallpaper.net
+- GitHub: https://github.com/zhaibin/wallpaper-universe
+- Email: contact@anywallpaper.net
 
 ---
 

@@ -8,6 +8,6 @@ binding = "WALLPAPER_CACHE"
 id = "preview_id"  # 开发环境使用
 
 # 路由配置（部署时启用）
-# routes = [
-#   { pattern = "admin.anywallpaper.com/*", zone_name = "anywallpaper.com" }
-# ]
+routes = [
+  { pattern = "admin.anywallpaper.net/*", zone_name = "anywallpaper.net" }
+]
