@@ -17,11 +17,11 @@ bucket_name = "wallpapers"
 [ai]
 binding = "AI"
 
-# D1 数据库（可选，暂时注释掉）
-# [[d1_databases]]
-# binding = "DB"
-# database_name = "anywallpaper-db"
-# database_id = "your-database-id"
+# D1 数据库
+[[d1_databases]]
+binding = "DB"
+database_name = "anywallpaper-db"
+database_id = "094622f2-651f-4f78-baa2-18481f8f0c81"
 
 # 路由配置（部署时启用）
 routes = [

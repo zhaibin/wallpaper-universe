@@ -54,8 +54,10 @@ CREATE TABLE IF NOT EXISTS wallpaper_colors (
 CREATE TABLE IF NOT EXISTS users (
   id TEXT PRIMARY KEY,
   username TEXT UNIQUE NOT NULL,
-  email TEXT UNIQUE,
+  email TEXT UNIQUE NOT NULL,
+  password_hash TEXT NOT NULL,
   avatar_url TEXT,
+  locale TEXT DEFAULT 'en' CHECK(locale IN ('en', 'zh', 'es', 'fr', 'pt', 'ja')),
   created_at DATETIME DEFAULT CURRENT_TIMESTAMP,
   updated_at DATETIME DEFAULT CURRENT_TIMESTAMP
 );

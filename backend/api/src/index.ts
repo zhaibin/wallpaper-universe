@@ -8,6 +8,10 @@ import {
   notFoundResponse,
   handleUpload,
   getUploadedFile,
+  registerUser,
+  loginUser,
+  requireAuthEnhanced,
+  getUserLocale,
 } from '../../shared';
 
 export default {
@@ -118,6 +122,44 @@ export default {
     if (url.pathname.startsWith('/wallpapers/')) {
       const fileName = url.pathname.replace('/wallpapers/', '');
       return getUploadedFile(fileName, env);
+    }
+
+    // User registration
+    if (url.pathname === '/v1/auth/register' && request.method === 'POST') {
+      const body = await request.json() as any;
+      const locale = getUserLocale(request);
+      const result = await registerUser(
+        env,
+        body.username,
+        body.email,
+        body.password,
+        body.locale || locale
+      );
+      return new Response(JSON.stringify(result), {
+        status: result.success ? 200 : 400,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+
+    // User login
+    if (url.pathname === '/v1/auth/login' && request.method === 'POST') {
+      const body = await request.json() as any;
+      const result = await loginUser(env, body.usernameOrEmail, body.password);
+      return new Response(JSON.stringify(result), {
+        status: result.success ? 200 : 401,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
+    }
+
+    // Get current user profile
+    if (url.pathname === '/v1/user/profile') {
+      const { user, error } = await requireAuthEnhanced(request, env);
+      if (error) return error;
+      
+      const { passwordHash, ...userProfile } = user as any;
+      return new Response(JSON.stringify(userProfile), {
+        headers: { 'Content-Type': 'application/json', ...corsHeaders },
+      });
     }
 
     return notFoundResponse();

@@ -1,28 +1,16 @@
 // Workers AI 图像分析
 
 import type { AIAnalysisResult, WallpaperTag, ColorInfo } from './types';
+import { getAIPrompt, type SupportedLocale } from './i18n';
 
 export async function analyzeImage(
   ai: any,
-  imageData: ArrayBuffer
+  imageData: ArrayBuffer,
+  locale: SupportedLocale = 'en'
 ): Promise<AIAnalysisResult> {
   try {
-    // 使用 Llama Vision 模型分析图像
-    const prompt = `分析这张壁纸图片，输出以下信息（请使用JSON格式）：
-1. description: 用50字左右描述这张壁纸的内容和特点
-2. tags: 提供三级标签（一级2-3个，二级3-5个，三级5-8个），每个标签包含 level(1/2/3), name(标签名), weight(0-1的权重值)
-3. colors: 提取3-5个主要颜色，每个颜色包含 hex(十六进制值), rgb([r,g,b]), percentage(占比), name(颜色名称)
-4. detectedObjects: 检测到的主要物体/元素（数组）
-5. mood: 整体情绪/氛围（如：宁静、活力、神秘等）
-6. style: 艺术风格（如：写实、抽象、简约等）
-
-要求：
-- 标签要具体准确，避免过于宽泛（如避免"自然"，用"山脉"、"森林"等）
-- 颜色要准确，用于聚类推荐
-- 标签按层级组织：一级（大类）→ 二级（中类）→ 三级（细类）
-
-请直接返回JSON对象，不要其他文字。`;
-
+    // 使用对应语言的提示词
+    const prompt = getAIPrompt(locale);
     const response = await ai.run('@cf/meta/llama-3.2-11b-vision-instruct', {
       image: Array.from(new Uint8Array(imageData)),
       prompt: prompt,

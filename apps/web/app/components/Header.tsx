@@ -37,6 +37,12 @@ export default function Header() {
             <Link href="/about" className="text-gray-700 dark:text-gray-300 hover:text-primary transition">
               关于
             </Link>
+            <Link href="/profile" className="text-gray-700 dark:text-gray-300 hover:text-primary transition">
+              个人中心
+            </Link>
+            <Link href="/auth/login" className="px-4 py-2 bg-primary text-white rounded-lg hover:opacity-90 transition">
+              登录
+            </Link>
           </div>
 
           {/* Mobile Menu Button */}
