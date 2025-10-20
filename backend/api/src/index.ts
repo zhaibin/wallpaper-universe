@@ -1,26 +1,46 @@
 import { kvGet, kvPut } from '../../shared/kv';
 import { requireAuth } from '../../shared/auth';
+import type { Env, Wallpaper, Category } from '../../shared/types';
 
-export interface Env {
-  WALLPAPER_CACHE: KVNamespace;
-  DB: D1Database;
-}
+import { checkRateLimit, errorResponse, notFoundResponse } from '../../shared';
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
-    const url = new URL(request.url);
-    
-    // CORS headers
-    const corsHeaders = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
-      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
-    };
+    try {
+      const url = new URL(request.url);
+      
+      // CORS headers
+      const corsHeaders = {
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+      };
 
-    // Handle CORS preflight
-    if (request.method === 'OPTIONS') {
-      return new Response(null, { headers: corsHeaders });
-    }
+      // Handle CORS preflight
+      if (request.method === 'OPTIONS') {
+        return new Response(null, { headers: corsHeaders });
+      }
+
+      // 速率限制（每个 IP 每分钟 60 次请求）
+      const clientIP = request.headers.get('CF-Connecting-IP') || 'unknown';
+      const canProceed = await checkRateLimit(env.WALLPAPER_CACHE, clientIP, {
+        limit: 60,
+        window: 60,
+      });
+
+      if (!canProceed) {
+        return new Response(
+          JSON.stringify({ error: 'Too Many Requests' }),
+          { 
+            status: 429, 
+            headers: { 
+              'Content-Type': 'application/json',
+              ...corsHeaders,
+              'Retry-After': '60',
+            } 
+          }
+        );
+      }
 
     // Health check
     if (url.pathname === '/health') {
@@ -67,16 +87,10 @@ export default {
       return handleFavorites(request, env, corsHeaders);
     }
 
-    return new Response(
-      JSON.stringify({ error: 'Not found' }), 
-      { 
-        status: 404, 
-        headers: { 
-          'Content-Type': 'application/json',
-          ...corsHeaders 
-        } 
-      }
-    );
+    return notFoundResponse();
+    } catch (error) {
+      return errorResponse(error);
+    }
   }
 };
 

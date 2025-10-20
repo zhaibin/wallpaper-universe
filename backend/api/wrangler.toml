@@ -6,7 +6,7 @@ compatibility_date = "2025-10-20"
 # 运行: wrangler kv:namespace create "WALLPAPER_CACHE"
 [[kv_namespaces]]
 binding = "WALLPAPER_CACHE"
-id = "preview_id"  # 开发环境使用，部署时需要替换为实际 ID
+id = "4eca079022f14b6183fbc87069cc7deb"
 
 # D1 数据库（可选，暂时注释掉）
 # [[d1_databases]]

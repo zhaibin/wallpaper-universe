@@ -5,7 +5,7 @@ compatibility_date = "2025-10-20"
 # KV 命名空间
 [[kv_namespaces]]
 binding = "WALLPAPER_CACHE"
-id = "preview_id"  # 开发环境使用
+id = "4eca079022f14b6183fbc87069cc7deb"
 
 # 路由配置（部署时启用）
 routes = [
