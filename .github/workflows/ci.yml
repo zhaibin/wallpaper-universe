@@ -1,0 +1,121 @@
+name: CI
+
+on:
+  push:
+    branches: [main, master, develop]
+  pull_request:
+    branches: [main, master, develop]
+
+jobs:
+  # Web应用构建测试
+  web:
+    name: Web App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          cd apps/web
+          npm install
+      
+      - name: Lint
+        run: |
+          cd apps/web
+          npm run lint
+      
+      - name: Build
+        run: |
+          cd apps/web
+          npm run build
+
+  # 桌面应用构建测试
+  desktop:
+    name: Desktop App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies
+        run: |
+          cd apps/desktop
+          npm install
+      
+      - name: Build
+        run: |
+          cd apps/desktop
+          npm run build
+
+  # 移动应用测试
+  mobile:
+    name: Mobile App
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: |
+          cd apps/mobile
+          flutter pub get
+      
+      - name: Analyze
+        run: |
+          cd apps/mobile
+          flutter analyze
+      
+      - name: Run tests
+        run: |
+          cd apps/mobile
+          flutter test
+
+  # 后端API测试
+  backend:
+    name: Backend API
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+      
+      - name: Install dependencies (API)
+        run: |
+          cd backend/api
+          npm install
+      
+      - name: Build (API)
+        run: |
+          cd backend/api
+          npm run build
+      
+      - name: Install dependencies (Admin)
+        run: |
+          cd backend/admin
+          npm install
+      
+      - name: Build (Admin)
+        run: |
+          cd backend/admin
+          npm run build
+

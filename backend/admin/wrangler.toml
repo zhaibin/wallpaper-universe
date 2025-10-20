@@ -1,0 +1,13 @@
+name = "anywallpaper-admin"
+main = "src/index.ts"
+compatibility_date = "2025-10-20"
+
+# KV 命名空间
+[[kv_namespaces]]
+binding = "WALLPAPER_CACHE"
+id = "preview_id"  # 开发环境使用
+
+# 路由配置（部署时启用）
+# routes = [
+#   { pattern = "admin.anywallpaper.com/*", zone_name = "anywallpaper.com" }
+# ]

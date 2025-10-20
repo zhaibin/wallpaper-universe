@@ -1,0 +1,28 @@
+{
+    "project": "Wallpaper Universe",
+    "description": "跨平台壁纸软件：iOS, Android, macOS, Windows, Web",
+    "workspaceProjects": true,
+    "prompts": [
+      {
+        "name": "Create Mobile Feature",
+        "content": "在 apps/mobile 目录中为 Flutter 创建一个新功能模块，包括视图、Provider 和调用 core 包逻辑。"
+      },
+      {
+        "name": "Create Desktop Feature",
+        "content": "在 apps/desktop 中生成一个新模块，包含 React 前端组件与 Rust 端 API 调用。"
+      },
+      {
+        "name": "Create Web Feature",
+        "content": "在 apps/web 中添加一个 Next.js 页面，包括路由、UI、服务端数据获取逻辑。"
+      },
+      {
+        "name": "Sync Shared Logic",
+        "content": "运行 scripts/sync.mjs，将 packages/core 同步到所有子项目 shared 目录。"
+      },
+      {
+        "name": "Release Project",
+        "content": "执行 scripts/release.mjs，自动更新版本号、提交 tag、触发 CI 发布。"
+      }
+    ]
+  }
+  

@@ -1,0 +1,14 @@
+{
+  "name": "anywallpaper-monorepo",
+  "private": true,
+  "workspaces": [
+    "apps/*",
+    "packages/*",
+    "backend/*"
+  ],
+  "scripts": {
+    "sync:all": "node scripts/sync.mjs",
+    "release": "node scripts/release.mjs",
+    "build:web": "cd apps/web && npm run build || true"
+  }
+}

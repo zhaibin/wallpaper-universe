@@ -1,0 +1,231 @@
+import { kvGet, kvPut } from '../../shared/kv';
+import { requireAuth } from '../../shared/auth';
+
+export interface Env {
+  WALLPAPER_CACHE: KVNamespace;
+  DB: D1Database;
+}
+
+export default {
+  async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
+    const url = new URL(request.url);
+    
+    // CORS headers
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET, POST, PUT, DELETE, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type, Authorization',
+    };
+
+    // Handle CORS preflight
+    if (request.method === 'OPTIONS') {
+      return new Response(null, { headers: corsHeaders });
+    }
+
+    // Health check
+    if (url.pathname === '/health') {
+      return new Response(
+        JSON.stringify({ 
+          ok: true, 
+          timestamp: new Date().toISOString(),
+          version: '0.1.0'
+        }), 
+        { 
+          headers: { 
+            'Content-Type': 'application/json',
+            ...corsHeaders 
+          } 
+        }
+      );
+    }
+
+    // Wallpapers API
+    if (url.pathname === '/v1/wallpapers') {
+      return handleWallpapers(request, env, corsHeaders);
+    }
+
+    // Wallpaper detail
+    if (url.pathname.match(/^\/v1\/wallpapers\/[^/]+$/)) {
+      const id = url.pathname.split('/').pop();
+      return handleWallpaperDetail(id!, env, corsHeaders);
+    }
+
+    // Categories
+    if (url.pathname === '/v1/categories') {
+      return handleCategories(corsHeaders);
+    }
+
+    // User favorites (requires auth)
+    if (url.pathname === '/v1/user/favorites') {
+      const authErr = requireAuth(request, env);
+      if (authErr) {
+        return new Response(authErr.body, { 
+          status: authErr.status, 
+          headers: { ...authErr.headers, ...corsHeaders } 
+        });
+      }
+      return handleFavorites(request, env, corsHeaders);
+    }
+
+    return new Response(
+      JSON.stringify({ error: 'Not found' }), 
+      { 
+        status: 404, 
+        headers: { 
+          'Content-Type': 'application/json',
+          ...corsHeaders 
+        } 
+      }
+    );
+  }
+};
+
+async function handleWallpapers(request: Request, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
+  const url = new URL(request.url);
+  const category = url.searchParams.get('category') || 'all';
+  const page = parseInt(url.searchParams.get('page') || '1');
+  const limit = parseInt(url.searchParams.get('limit') || '20');
+
+  // Try cache first
+  const cacheKey = `wallpapers:${category}:${page}:${limit}`;
+  const cached = await kvGet(env.WALLPAPER_CACHE, cacheKey);
+  if (cached) {
+    return new Response(cached, { 
+      headers: { 
+        'Content-Type': 'application/json',
+        'X-Cache': 'HIT',
+        ...corsHeaders 
+      } 
+    });
+  }
+
+  // Mock data (replace with actual database query)
+  const mockWallpapers = [
+    {
+      id: '1',
+      title: '自然风光 1',
+      url: 'https://picsum.photos/1920/1080',
+      thumbnail: 'https://picsum.photos/400/300',
+      category: 'nature',
+      width: 1920,
+      height: 1080,
+      author: 'John Doe',
+      tags: ['nature', 'landscape'],
+    },
+    {
+      id: '2',
+      title: '抽象艺术',
+      url: 'https://picsum.photos/1920/1080?random=2',
+      thumbnail: 'https://picsum.photos/400/300?random=2',
+      category: 'abstract',
+      width: 1920,
+      height: 1080,
+      author: 'Jane Smith',
+      tags: ['abstract', 'art'],
+    },
+    {
+      id: '3',
+      title: '简约设计',
+      url: 'https://picsum.photos/1920/1080?random=3',
+      thumbnail: 'https://picsum.photos/400/300?random=3',
+      category: 'minimal',
+      width: 1920,
+      height: 1080,
+      author: 'Mike Johnson',
+      tags: ['minimal', 'design'],
+    },
+  ];
+
+  const filteredWallpapers = category === 'all' 
+    ? mockWallpapers 
+    : mockWallpapers.filter(w => w.category === category);
+
+  const body = JSON.stringify(filteredWallpapers);
+  
+  // Cache for 60 seconds
+  await kvPut(env.WALLPAPER_CACHE, cacheKey, body, 60);
+
+  return new Response(body, { 
+    headers: { 
+      'Content-Type': 'application/json',
+      'X-Cache': 'MISS',
+      ...corsHeaders 
+    } 
+  });
+}
+
+async function handleWallpaperDetail(id: string, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
+  // Mock data
+  const wallpaper = {
+    id,
+    title: '壁纸详情',
+    url: `https://picsum.photos/1920/1080?random=${id}`,
+    thumbnail: `https://picsum.photos/400/300?random=${id}`,
+    category: 'nature',
+    width: 1920,
+    height: 1080,
+    author: 'John Doe',
+    tags: ['nature', 'landscape'],
+    downloads: 1234,
+    views: 5678,
+  };
+
+  return new Response(JSON.stringify(wallpaper), {
+    headers: { 
+      'Content-Type': 'application/json',
+      ...corsHeaders 
+    }
+  });
+}
+
+async function handleCategories(corsHeaders: Record<string, string>): Promise<Response> {
+  const categories = [
+    { id: 'all', name: '全部', count: 1000 },
+    { id: 'nature', name: '自然', count: 250 },
+    { id: 'abstract', name: '抽象', count: 180 },
+    { id: 'minimal', name: '简约', count: 150 },
+    { id: 'dark', name: '暗色', count: 200 },
+    { id: 'colorful', name: '彩色', count: 220 },
+  ];
+
+  return new Response(JSON.stringify(categories), {
+    headers: { 
+      'Content-Type': 'application/json',
+      ...corsHeaders 
+    }
+  });
+}
+
+async function handleFavorites(request: Request, env: Env, corsHeaders: Record<string, string>): Promise<Response> {
+  if (request.method === 'GET') {
+    // Return user favorites (mock data)
+    return new Response(JSON.stringify({ favorites: [] }), {
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
+    });
+  }
+
+  if (request.method === 'POST') {
+    // Add to favorites
+    const body = await request.json();
+    return new Response(JSON.stringify({ success: true }), {
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
+    });
+  }
+
+  return new Response(
+    JSON.stringify({ error: 'Method not allowed' }), 
+    { 
+      status: 405,
+      headers: { 
+        'Content-Type': 'application/json',
+        ...corsHeaders 
+      }
+    }
+  );
+}

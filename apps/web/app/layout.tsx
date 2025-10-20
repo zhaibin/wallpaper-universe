@@ -1,0 +1,40 @@
+import type { Metadata } from 'next'
+import { Inter } from 'next/font/google'
+import './globals.css'
+import Header from './components/Header'
+import Footer from './components/Footer'
+
+const inter = Inter({ subsets: ['latin'] })
+
+export const metadata: Metadata = {
+  title: 'AnyWallpaper - 精选高清壁纸',
+  description: '发现和下载精美的高清壁纸，支持iOS、Android、Windows、macOS等多平台',
+  keywords: ['壁纸', '高清壁纸', 'wallpaper', '桌面壁纸', '手机壁纸'],
+  authors: [{ name: 'AnyWallpaper Team' }],
+  openGraph: {
+    title: 'AnyWallpaper - 精选高清壁纸',
+    description: '发现和下载精美的高清壁纸',
+    type: 'website',
+  },
+}
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
+  return (
+    <html lang="zh-CN">
+      <body className={inter.className}>
+        <div className="min-h-screen flex flex-col bg-gray-50 dark:bg-gray-900">
+          <Header />
+          <main className="flex-1">
+            {children}
+          </main>
+          <Footer />
+        </div>
+      </body>
+    </html>
+  )
+}
+

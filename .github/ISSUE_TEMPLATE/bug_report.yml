@@ -1,0 +1,67 @@
+name: Bug Report
+description: 报告一个 Bug
+title: "[Bug]: "
+labels: ["bug"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        感谢您报告 Bug！请填写以下信息以帮助我们更好地理解和修复问题。
+
+  - type: dropdown
+    id: platform
+    attributes:
+      label: 平台
+      description: 在哪个平台上遇到了问题？
+      options:
+        - Web
+        - Desktop (Windows)
+        - Desktop (macOS)
+        - Desktop (Linux)
+        - Mobile (iOS)
+        - Mobile (Android)
+      multiple: true
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Bug 描述
+      description: 请详细描述遇到的问题
+      placeholder: 描述 Bug...
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: 复现步骤
+      description: 如何复现这个问题？
+      placeholder: |
+        1. 打开应用
+        2. 点击...
+        3. 看到错误...
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: 期望行为
+      description: 您期望发生什么？
+    validations:
+      required: true
+
+  - type: textarea
+    id: screenshots
+    attributes:
+      label: 截图
+      description: 如果有截图，请粘贴在这里
+
+  - type: textarea
+    id: additional
+    attributes:
+      label: 附加信息
+      description: 其他相关信息
+

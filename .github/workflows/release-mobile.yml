@@ -1,0 +1,81 @@
+name: Release Mobile App
+
+on:
+  push:
+    tags:
+      - 'mobile-v*'
+
+jobs:
+  android:
+    name: Build Android
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'zulu'
+          java-version: '17'
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: |
+          cd apps/mobile
+          flutter pub get
+      
+      - name: Build APK
+        run: |
+          cd apps/mobile
+          flutter build apk --release
+      
+      - name: Build App Bundle
+        run: |
+          cd apps/mobile
+          flutter build appbundle --release
+      
+      - name: Upload APK
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-apk
+          path: apps/mobile/build/app/outputs/flutter-apk/app-release.apk
+      
+      - name: Upload App Bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: android-aab
+          path: apps/mobile/build/app/outputs/bundle/release/app-release.aab
+
+  ios:
+    name: Build iOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+      
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: '3.16.0'
+          channel: 'stable'
+      
+      - name: Get dependencies
+        run: |
+          cd apps/mobile
+          flutter pub get
+      
+      - name: Build iOS (No Codesign)
+        run: |
+          cd apps/mobile
+          flutter build ios --release --no-codesign
+      
+      - name: Upload IPA
+        uses: actions/upload-artifact@v4
+        with:
+          name: ios-app
+          path: apps/mobile/build/ios/iphoneos/Runner.app
+

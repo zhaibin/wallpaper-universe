@@ -1,0 +1,40 @@
+# 依赖
+node_modules/
+.pnp
+.pnp.js
+
+# 构建产物
+dist/
+build/
+out/
+.next/
+
+# 缓存
+.cache/
+.wrangler/
+
+# 日志
+*.log
+logs/
+
+# 环境变量
+.env
+.env.local
+.env.*
+
+# 编辑器
+.vscode/
+.idea/
+
+# 系统文件
+.DS_Store
+Thumbs.db
+
+# Flutter
+apps/mobile/.dart_tool/
+apps/mobile/build/
+apps/mobile/.pub-cache/
+
+# Rust
+apps/desktop/src-tauri/target/
+

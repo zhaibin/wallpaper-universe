@@ -1,0 +1,20 @@
+name = "anywallpaper-api"
+main = "src/index.ts"
+compatibility_date = "2025-10-20"
+
+# KV 命名空间（使用时需要先创建）
+# 运行: wrangler kv:namespace create "WALLPAPER_CACHE"
+[[kv_namespaces]]
+binding = "WALLPAPER_CACHE"
+id = "preview_id"  # 开发环境使用，部署时需要替换为实际 ID
+
+# D1 数据库（可选，暂时注释掉）
+# [[d1_databases]]
+# binding = "DB"
+# database_name = "anywallpaper-db"
+# database_id = "your-database-id"
+
+# 路由配置（部署时启用）
+# routes = [
+#   { pattern = "api.anywallpaper.com/*", zone_name = "anywallpaper.com" }
+# ]
