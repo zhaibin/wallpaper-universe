@@ -9,9 +9,16 @@ import { Analytics } from './components/Analytics'
 const inter = Inter({ subsets: ['latin'] })
 
 export const metadata: Metadata = {
-  title: 'AnyWallpaper - 精选高清壁纸',
+  metadataBase: new URL('https://www.anywallpaper.net'),
+  title: {
+    default: 'AnyWallpaper - 精选高清壁纸',
+    template: '%s | AnyWallpaper',
+  },
   description: '发现和下载精美的高清壁纸，支持iOS、Android、Windows、macOS等多平台',
   keywords: ['壁纸', '高清壁纸', 'wallpaper', '桌面壁纸', '手机壁纸'],
+  alternates: {
+    canonical: 'https://www.anywallpaper.net',
+  },
   authors: [{ name: 'AnyWallpaper Team' }],
   openGraph: {
     title: 'AnyWallpaper - 精选高清壁纸',

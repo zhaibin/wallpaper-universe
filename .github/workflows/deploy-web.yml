@@ -1,4 +1,4 @@
-name: Deploy Web App
+name: Deploy Web (Workers)
 
 on:
   push:
@@ -9,35 +9,34 @@ on:
 
 jobs:
   deploy:
-    name: Deploy to Cloudflare Pages
+    name: Deploy Next.js to Cloudflare Workers
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      deployments: write
     steps:
       - uses: actions/checkout@v4
-      
+
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
           node-version: '18'
-      
-      - name: Install dependencies
+
+      - name: Install dependencies (root)
+        run: npm install
+
+      - name: Install dependencies (web)
         run: |
           cd apps/web
           npm install
-      
-      - name: Build
+
+      - name: Build Next.js for Workers
         run: |
           cd apps/web
-          npm run build
-      
-      - name: Publish to Cloudflare Pages
-        uses: cloudflare/pages-action@v1
+          npm run cf:build
+
+      - name: Deploy with Wrangler
+        uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
           accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
-          projectName: anywallpaper-web
-          directory: apps/web/out
-          gitHubToken: ${{ secrets.GITHUB_TOKEN }}
+          workingDirectory: 'apps/web'
+          command: deploy
 

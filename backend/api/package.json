@@ -9,11 +9,9 @@
     "build": "tsc",
     "tail": "wrangler tail"
   },
-  "dependencies": {
-    "@cloudflare/workers-types": "^4.20231218.0"
-  },
   "devDependencies": {
-    "wrangler": "^3.22.0",
-    "typescript": "^5.3.3"
+    "@cloudflare/workers-types": "4.20251011.0",
+    "typescript": "^5.3.3",
+    "wrangler": "^3.22.0"
   }
 }

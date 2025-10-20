@@ -6,9 +6,38 @@ import '../widgets/wallpaper_card.dart';
 import 'wallpaper_detail_screen.dart';
 import 'favorites_screen.dart';
 import 'settings_screen.dart';
+import 'dart:async';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  Timer? _queueTimer;
+
+  @override
+  void initState() {
+    super.initState();
+    final provider = context.read<WallpaperProvider>();
+    // 初始化刷新一次队列
+    provider.refreshQueue();
+    // 每 60s 刷新
+    _queueTimer = Timer.periodic(const Duration(seconds: 60), (_) async {
+      await provider.refreshQueue();
+      if (provider.slideshowEnabled) {
+        provider.nextItem();
+      }
+    });
+  }
+
+  @override
+  void dispose() {
+    _queueTimer?.cancel();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {

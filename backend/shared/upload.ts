@@ -14,9 +14,10 @@ export async function handleUpload(
 ): Promise<Response> {
   try {
     const formData = await request.formData();
-    const file = formData.get('file') as File;
-    const title = formData.get('title') as string;
-    const category = formData.get('category') as string;
+    const fileEntry = formData.get('file');
+    const file = (fileEntry as unknown as File | null);
+    const title = (formData.get('title') as string) || '';
+    const category = (formData.get('category') as string) || '';
     
     if (!file) {
       return new Response(

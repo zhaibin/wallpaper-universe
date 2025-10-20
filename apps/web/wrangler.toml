@@ -1,0 +1,15 @@
+name = "anywallpaper-web-worker"
+main = "./.vercel/output/static/_worker.js"
+compatibility_date = "2025-10-20"
+
+# 通过 next-on-pages 生成 Worker 入口文件 (_worker.js)
+[build]
+command = "npx @cloudflare/next-on-pages@1 build --output-workers"
+
+routes = [
+  { pattern = "www.anywallpaper.net/*", zone_name = "anywallpaper.net" }
+]
+
+[vars]
+NEXT_PUBLIC_API_URL = "https://api.anywallpaper.net/v1"
+

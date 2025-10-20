@@ -18,10 +18,13 @@ const nextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
-  output: 'export', // 静态导出用于 Cloudflare Pages
   
   // 性能优化
   swcMinify: true,
+  experimental: {
+    // Workers SSR 最佳实践
+    optimizePackageImports: ['react', 'react-dom'],
+  },
   
   // 安全 Headers
   async headers() {

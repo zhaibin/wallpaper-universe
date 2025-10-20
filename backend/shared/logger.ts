@@ -46,7 +46,9 @@ export class Logger {
   }
 }
 
+declare const __ENV_NODE_ENV__: string | undefined;
+const runtimeNodeEnv = (typeof __ENV_NODE_ENV__ !== 'undefined') ? __ENV_NODE_ENV__ : 'production';
 export const logger = new Logger(
-  process.env.NODE_ENV === 'production' ? LogLevel.INFO : LogLevel.DEBUG
+  runtimeNodeEnv === 'production' ? LogLevel.INFO : LogLevel.DEBUG
 );
 

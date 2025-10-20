@@ -10,5 +10,8 @@
     "sync:all": "node scripts/sync.mjs",
     "release": "node scripts/release.mjs",
     "build:web": "cd apps/web && npm run build || true"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "4.20251011.0"
   }
 }

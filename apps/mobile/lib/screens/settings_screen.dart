@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../providers/theme_provider.dart';
+import '../providers/wallpaper_provider.dart';
+import 'login_screen.dart';
 
 class SettingsScreen extends StatelessWidget {
   const SettingsScreen({super.key});
@@ -16,9 +18,44 @@ class SettingsScreen extends StatelessWidget {
           const SizedBox(height: 16),
           _buildThemeSection(context),
           const Divider(height: 32),
+          _buildSlideshowSection(context),
+          const Divider(height: 32),
+        _buildAccountSection(context),
+        const Divider(height: 32),
           _buildAboutSection(context),
         ],
       ),
+    );
+  }
+
+  Widget _buildAccountSection(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            '账号',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        ListTile(
+          leading: const Icon(Icons.login),
+          title: const Text('登录'),
+          subtitle: const Text('登录后可同步轮播队列'),
+          onTap: () async {
+            await Navigator.push(
+              context,
+              MaterialPageRoute(builder: (_) => const LoginScreen()),
+            );
+          },
+        ),
+      ],
     );
   }
 
@@ -69,6 +106,47 @@ class SettingsScreen extends StatelessWidget {
               ],
             );
           },
+        ),
+      ],
+    );
+  }
+
+  Widget _buildSlideshowSection(BuildContext context) {
+    final wall = context.watch<WallpaperProvider>();
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        const Padding(
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: Text(
+            '轮播',
+            style: TextStyle(
+              fontSize: 14,
+              fontWeight: FontWeight.bold,
+              color: Colors.grey,
+            ),
+          ),
+        ),
+        const SizedBox(height: 8),
+        SwitchListTile(
+          title: const Text('启用轮播'),
+          value: wall.slideshowEnabled,
+          onChanged: wall.setSlideshowEnabled,
+        ),
+        ListTile(
+          title: const Text('轮播间隔（秒）'),
+          subtitle: Text('${wall.slideDurationSec} 秒'),
+          trailing: SizedBox(
+            width: 100,
+            child: TextField(
+              keyboardType: TextInputType.number,
+              decoration: const InputDecoration(hintText: '60'),
+              onSubmitted: (v) {
+                final n = int.tryParse(v) ?? 60;
+                wall.setSlideDurationSec(n);
+              },
+            ),
+          ),
         ),
       ],
     );

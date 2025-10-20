@@ -1,6 +1,7 @@
 'use client'
 
 import { useState, useRef } from 'react'
+import Image from 'next/image'
 import { motion } from 'framer-motion'
 
 interface UploadResult {
@@ -111,11 +112,17 @@ export default function UploadPage() {
               {preview ? (
                 <div className="space-y-4">
                   {file?.type.startsWith('image/') ? (
-                    <img
-                      src={preview}
-                      alt="Preview"
-                      className="max-h-64 mx-auto rounded-lg"
-                    />
+                    <div className="relative mx-auto" style={{ maxHeight: 256, width: 'auto' }}>
+                      <Image
+                        src={preview}
+                        alt="Preview"
+                        width={512}
+                        height={256}
+                        className="rounded-lg h-auto w-auto max-h-64"
+                        style={{ objectFit: 'contain' }}
+                        unoptimized
+                      />
+                    </div>
                   ) : (
                     <video
                       src={preview}

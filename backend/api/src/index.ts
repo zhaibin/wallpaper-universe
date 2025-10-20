@@ -137,7 +137,15 @@ export default {
       }
       if (request.method === 'POST') {
         const body = await request.json();
-        const queue = await addToQueue(env, identifier, body);
+        // 进行最小校验并断言为后端期望的队列项类型
+        const item: any = {
+          id: (body as any)?.id ?? (body as any)?.url ?? crypto.randomUUID(),
+          url: (body as any)?.url,
+          title: (body as any)?.title ?? 'Queue Item',
+          type: (body as any)?.type ?? 'image',
+          durationSec: Number((body as any)?.durationSec ?? 60),
+        };
+        const queue = await addToQueue(env, identifier, item);
         return new Response(JSON.stringify(queue), { headers: { 'Content-Type': 'application/json', ...corsHeaders } });
       }
       if (request.method === 'DELETE') {
