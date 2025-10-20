@@ -24,13 +24,14 @@ export const metadata: Metadata = {
     title: 'AnyWallpaper - 精选高清壁纸',
     description: '发现和下载精美的高清壁纸',
   },
-  viewport: {
-    width: 'device-width',
-    initialScale: 1,
-    maximumScale: 5,
-  },
-  themeColor: '#667eea',
   manifest: '/manifest.json',
+}
+
+export const viewport = {
+  width: 'device-width',
+  initialScale: 1,
+  maximumScale: 5,
+  themeColor: '#667eea',
 }
 
 export default function RootLayout({

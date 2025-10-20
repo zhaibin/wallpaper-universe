@@ -19,6 +19,37 @@ interface WallpaperGridProps {
 export default function WallpaperGrid({ wallpapers }: WallpaperGridProps) {
   const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null)
 
+  const addToQueue = async (wallpaper: Wallpaper) => {
+    try {
+      if (typeof window === 'undefined') return
+      
+      const token = localStorage.getItem('auth_token') || 'demo-token'
+      const deviceId = localStorage.getItem('device_id') || crypto.randomUUID()
+      localStorage.setItem('device_id', deviceId)
+
+      await fetch('https://api.anywallpaper.net/v1/slideshow/queue', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${token}`,
+          'X-Client-Id': deviceId,
+        },
+        body: JSON.stringify({
+          id: wallpaper.id,
+          url: wallpaper.url,
+          title: wallpaper.title,
+          type: 'image',
+          durationSec: 60,
+        }),
+      })
+
+      alert('已加入轮播队列！其他设备将同步轮播此壁纸')
+    } catch (error) {
+      console.error('Failed to add to queue:', error)
+      alert('加入队列失败')
+    }
+  }
+
   return (
     <>
       <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -80,7 +111,13 @@ export default function WallpaperGrid({ wallpapers }: WallpaperGridProps) {
                   </span>
                 )}
               </div>
-              <div className="flex gap-4">
+              <div className="flex flex-wrap gap-3">
+                <button
+                  onClick={() => addToQueue(selectedWallpaper)}
+                  className="px-6 py-3 bg-gradient-to-r from-green-500 to-green-600 text-white rounded-lg font-semibold hover:shadow-xl transition"
+                >
+                  加入轮播队列
+                </button>
                 <a
                   href={selectedWallpaper.url}
                   download

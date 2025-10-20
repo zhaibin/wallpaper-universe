@@ -18,6 +18,7 @@ const nextConfig = {
   reactStrictMode: true,
   compress: true,
   poweredByHeader: false,
+  output: 'export', // 静态导出用于 Cloudflare Pages
   
   // 性能优化
   swcMinify: true,

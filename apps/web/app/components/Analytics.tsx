@@ -1,17 +1,16 @@
 'use client'
 
 import { useEffect } from 'react'
-import { usePathname, useSearchParams } from 'next/navigation'
+import { usePathname } from 'next/navigation'
 
 export function Analytics() {
   const pathname = usePathname()
-  const searchParams = useSearchParams()
 
   useEffect(() => {
     // 页面浏览追踪
     if (typeof window !== 'undefined') {
       // 这里可以集成 Google Analytics, Plausible 等
-      const url = `${pathname}${searchParams.toString() ? `?${searchParams}` : ''}`
+      const url = `${pathname}${window.location.search}`
       console.log('Page view:', url)
       
       // 示例: 发送到 Cloudflare Analytics
@@ -24,7 +23,7 @@ export function Analytics() {
         // navigator.sendBeacon('/api/analytics', data)
       }
     }
-  }, [pathname, searchParams])
+  }, [pathname])
 
   return null
 }

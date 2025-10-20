@@ -210,6 +210,8 @@ export const translations = {
 };
 
 export function getTranslation(locale: Locale, key: string): string {
-  return translations[locale]?.[key as keyof typeof translations.en] || translations.en[key as keyof typeof translations.en] || key;
+  const localeTranslations = translations[locale] || translations.en;
+  const translationKey = key as keyof typeof translations.en;
+  return (localeTranslations as any)[translationKey] || (translations.en as any)[translationKey] || key;
 }
 

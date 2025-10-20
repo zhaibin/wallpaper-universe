@@ -12,6 +12,10 @@ import {
   loginUser,
   requireAuthEnhanced,
   getUserLocale,
+  addToQueue,
+  getQueue,
+  removeFromQueue,
+  clearQueue,
 } from '../../shared';
 
 export default {
@@ -122,6 +126,29 @@ export default {
     if (url.pathname.startsWith('/wallpapers/')) {
       const fileName = url.pathname.replace('/wallpapers/', '');
       return getUploadedFile(fileName, env);
+    }
+
+    // Slideshow queue APIs
+    if (url.pathname === '/v1/slideshow/queue') {
+      const identifier = request.headers.get('X-Client-Id') || getUserLocale(request); // fallback not ideal; will be overridden by clients
+      if (request.method === 'GET') {
+        const queue = await getQueue(env, `slideshow:queue:${identifier}`);
+        return new Response(JSON.stringify(queue), { headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+      }
+      if (request.method === 'POST') {
+        const body = await request.json();
+        const queue = await addToQueue(env, identifier, body);
+        return new Response(JSON.stringify(queue), { headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+      }
+      if (request.method === 'DELETE') {
+        const wallpaperId = url.searchParams.get('id');
+        if (wallpaperId) {
+          const queue = await removeFromQueue(env, identifier, wallpaperId);
+          return new Response(JSON.stringify(queue), { headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+        }
+        const queue = await clearQueue(env, identifier);
+        return new Response(JSON.stringify(queue), { headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+      }
     }
 
     // User registration
