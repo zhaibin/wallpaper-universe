@@ -2,7 +2,13 @@ import { kvGet, kvPut } from '../../shared/kv';
 import { requireAuth } from '../../shared/auth';
 import type { Env, Wallpaper, Category } from '../../shared/types';
 
-import { checkRateLimit, errorResponse, notFoundResponse } from '../../shared';
+import { 
+  checkRateLimit, 
+  errorResponse, 
+  notFoundResponse,
+  handleUpload,
+  getUploadedFile,
+} from '../../shared';
 
 export default {
   async fetch(request: Request, env: Env, ctx: ExecutionContext): Promise<Response> {
@@ -85,6 +91,33 @@ export default {
         });
       }
       return handleFavorites(request, env, corsHeaders);
+    }
+
+    // Upload wallpaper (requires auth)
+    if (url.pathname === '/v1/upload' && request.method === 'POST') {
+      const authErr = requireAuth(request, env);
+      if (authErr) {
+        return new Response(authErr.body, { 
+          status: authErr.status, 
+          headers: { ...authErr.headers, ...corsHeaders } 
+        });
+      }
+      const response = await handleUpload(request, env);
+      // 添加 CORS headers
+      const newHeaders = new Headers(response.headers);
+      Object.entries(corsHeaders).forEach(([key, value]) => {
+        newHeaders.set(key, value);
+      });
+      return new Response(response.body, {
+        status: response.status,
+        headers: newHeaders,
+      });
+    }
+
+    // Get uploaded file
+    if (url.pathname.startsWith('/wallpapers/')) {
+      const fileName = url.pathname.replace('/wallpapers/', '');
+      return getUploadedFile(fileName, env);
     }
 
     return notFoundResponse();

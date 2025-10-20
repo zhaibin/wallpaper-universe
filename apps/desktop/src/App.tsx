@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { invoke } from '@tauri-apps/api/tauri';
+import { UploadDialog } from './components/UploadDialog';
 
 interface Wallpaper {
   id: string;
@@ -13,6 +14,7 @@ function App() {
   const [wallpapers, setWallpapers] = useState<Wallpaper[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedWallpaper, setSelectedWallpaper] = useState<Wallpaper | null>(null);
+  const [showUpload, setShowUpload] = useState(false);
 
   useEffect(() => {
     fetchWallpapers();
@@ -51,6 +53,12 @@ function App() {
       <header>
         <h1>AnyWallpaper Desktop</h1>
         <p>精选高清壁纸，一键设置桌面</p>
+        <button 
+          onClick={() => setShowUpload(true)}
+          className="upload-btn"
+        >
+          + 上传壁纸
+        </button>
       </header>
 
       {loading ? (
@@ -90,6 +98,8 @@ function App() {
           </div>
         </div>
       )}
+
+      {showUpload && <UploadDialog onClose={() => setShowUpload(false)} />}
     </div>
   );
 }
