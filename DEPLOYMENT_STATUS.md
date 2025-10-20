@@ -124,9 +124,14 @@ curl -X POST https://anywallpaper-api.xants.workers.dev/v1/upload \
 - [ ] 等待域名生效（路由已配置）
 
 ### Web 应用部署
-- [ ] Cloudflare Pages 连接 GitHub
-- [ ] 配置构建设置
-- [ ] 添加环境变量: NEXT_PUBLIC_API_URL
+- [x] Cloudflare Pages 项目创建：anywallpaper-web
+- [ ] 通过 Dashboard 连接 GitHub 仓库
+- [ ] 配置构建设置：
+  - 框架：Next.js
+  - 构建命令：`cd apps/web && npm install && npm run build`  
+  - 输出目录：`apps/web/.next`
+- [ ] 环境变量：NEXT_PUBLIC_API_URL=https://api.anywallpaper.net/v1
+- [ ] 绑定自定义域名：www.anywallpaper.net
 
 ### 安全加固
 - [ ] 更新 JWT_SECRET（移除 demo-token）
